@@ -1,7 +1,9 @@
-import { drizzle } from "drizzle-orm/node-postgres";
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 
 export const createDB = (ctx: any) => {
-    const db = drizzle(ctx.DB_URL!);
+    const sql = neon(ctx.DB_URL!);
+    const db = drizzle(sql);
 
     return db;
 };
