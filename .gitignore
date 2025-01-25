@@ -31,3 +31,10 @@ lerna-debug.log*
 
 # misc
 .DS_Store
+
+#secret
+.dev.vars
+
+#other
+drizzle
+wrangler.toml

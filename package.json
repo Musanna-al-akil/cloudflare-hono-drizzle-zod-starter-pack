@@ -1,14 +1,21 @@
 {
-  "name": "hono-minimal-starter-pack",
-  "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify"
-  },
-  "dependencies": {
-    "hono": "^4.6.18"
-  },
-  "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250109.0",
-    "wrangler": "^3.101.0"
-  }
+    "name": "hono-minimal-starter-pack",
+    "scripts": {
+        "dev": "wrangler dev",
+        "deploy": "wrangler deploy --minify"
+    },
+    "dependencies": {
+        "@hono/zod-validator": "^0.4.2",
+        "drizzle-orm": "^0.38.4",
+        "drizzle-zod": "^0.6.1",
+        "hono": "^4.6.18",
+        "pg": "^8.13.1",
+        "zod": "^3.24.1"
+    },
+    "devDependencies": {
+        "@cloudflare/workers-types": "^4.20250109.0",
+        "@types/pg": "^8.11.11",
+        "drizzle-kit": "^0.30.2",
+        "wrangler": "^3.101.0"
+    }
 }
