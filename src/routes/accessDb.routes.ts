@@ -1,7 +1,8 @@
+import { Hono } from "hono";
+
 import { createDB } from "@/db/connection";
 import { randomInsertSchema } from "@/db/schema";
 import { getRandom, insertRandom } from "@/services/random.service";
-import { Hono } from "hono";
 
 export const accessDBRouter = new Hono()
   .post("/", async (c) => {

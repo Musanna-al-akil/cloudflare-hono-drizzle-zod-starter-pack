@@ -1,5 +1,6 @@
-import { accessDBRouter, helloRouter } from "@/routes";
 import { Hono } from "hono";
+
+import { accessDBRouter, helloRouter } from "@/routes";
 
 export type Bindings = {
   SECRET_KEY: string;

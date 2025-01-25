@@ -1,7 +1,8 @@
+import { eq } from "drizzle-orm";
+
 import type { db } from "@/db/connection";
 
 import { randomTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
 
 export async function insertRandom(db: db, random: any) {
   return await db
