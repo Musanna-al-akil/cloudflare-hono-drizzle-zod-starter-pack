@@ -4,10 +4,10 @@ A TypeScript starter template for building Cloudflare Workers using Hono framewo
 
 ## Features
 
-- ⚡️ [Hono](https://hono.dev/) - Fast, Lightweight, Web-standards web framework
+- 🔥 [Hono](https://hono.dev/) - Fast, Lightweight, Web-standards web framework
 - 🔧 [Drizzle ORM](https://orm.drizzle.team/) - TypeScript ORM for SQL databases
 - ✨ [Zod](https://zod.dev/) - TypeScript-first schema validation
-- 🔑 [Cloudflare Workers](https://workers.cloudflare.com/) - Serverless platform
+- 👷 [Cloudflare Workers](https://workers.cloudflare.com/) - Serverless platform
 - 📘 TypeScript support
 - 🧪 Jest for testing
 - 🎨 ESLint + Prettier for code formatting `@antfu/eslint-config`
@@ -16,21 +16,27 @@ A TypeScript starter template for building Cloudflare Workers using Hono framewo
 ## Project Structure
 
 ```.
-├── src/ # Source code
-│ ├── config/ # Configuration files
-│ ├── db/ # Database related code
-│ │ └── schema/ # Drizzle schema definitions
-│ ├── middlewares/ # Hono middlewares
-│ ├── routes/ # API routes
-│ ├── services/ # Business logic
-│ └── index.ts # Entry point
-├── test/ # Test files
-├── .env # Environment variables
-|── .dev.vars # Environment variables example
+├── .github/        # GitHub-specific configurations 
+│   └── workflows/  # Automation workflows for testing, deployment, etc.
+├── .husky/         # Git hooks (e.g., pre-commit)
+├── .vscode/        # VS Code workspace-specific settings
+├── src/ 
+│ ├── config/       # Configuration files
+│ ├── db/           # Database related code
+│ │ └── schema/     # Drizzle schema definitions
+│ ├── middlewares/  # Hono middlewares
+│ ├── routes/       # API routes
+│ ├── services/     # Business logic
+│ └── index.ts      # Entry point
+├── test/           # Test files
+├── .env.example    # Environment variables
+|── .dev.vars.example # Environment variables example
+├── .lintstagedrc   # Configuration for lint-staged (pre-commit).
 ├── drizzle.config.ts # Drizzle configuration
 |── eslint.config.mjs # eslint configuration
-├── tsconfig.json # TypeScript configuration
-└── wrangler.toml # Cloudflare Workers configuration
+├── package.json   # Project metadata and dependencies.
+├── tsconfig.json  # TypeScript configuration
+└── wrangler.toml  # Cloudflare Workers configuration
 ```
 
 ## Getting Started
@@ -48,23 +54,27 @@ A TypeScript starter template for building Cloudflare Workers using Hono framewo
    ```
 
 3. Setting up environment files
-    - Copy the example files to create your environment files:
-        ```base
-        cp .env.example .env
-        cp .dev.vars.example .dev.vars
-        ```
 
-    - Update the values in both files: 
-    - `.env` requires:
-        ```
-        DB_URL=your_database_url
-        ```
+   - Copy the example files to create your environment files:
 
-    - `.dev.vars` requires:
-        ```
-        SECRET_KEY=your_secret_key
-        DB_URL=your_database_connection
-        ```
+     ```bash
+     cp .env.example .env.example
+     cp .dev.vars.example .dev.vars
+     ```
+
+   - Update the values in both files:
+   - `.env` requires:
+
+     ```
+     DB_URL=your_database_connection_url
+     ```
+
+   - `.dev.vars` requires:
+     ```
+     SECRET_KEY=your_secret_key
+     DB_URL=your_database_connection_url
+     ```
+
 4. Run development server:
 
    ```bash
@@ -76,8 +86,6 @@ A TypeScript starter template for building Cloudflare Workers using Hono framewo
    bunx wrangler login
    bun run deploy
    ```
-
-Available Scripts
 
 ## Available Scripts
 
@@ -92,7 +100,10 @@ Available Scripts
 
 Required environment variables in `.env`:
 
-    ```json
-    DB_URL=your_database_url
-    SECRET_KEY=your_secret_key
-    ```
+```
+DB_URL=your_database_url
+```
+
+## License
+
+[MIT](./LICENSE) License &copy; 2025-PRESENT [Musanna AL Akil](https://github.com/Musanna-al-akil)
