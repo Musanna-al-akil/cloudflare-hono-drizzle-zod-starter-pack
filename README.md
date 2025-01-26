@@ -8,8 +8,8 @@ A TypeScript starter template for building Cloudflare Workers using Hono framewo
 - 🔧 [Drizzle ORM](https://orm.drizzle.team/) - TypeScript ORM for SQL databases
 - ✨ [Zod](https://zod.dev/) - TypeScript-first schema validation
 - 👷 [Cloudflare Workers](https://workers.cloudflare.com/) - Serverless platform
+- ⚡ [Vitest](https://vitest.dev/) for testing
 - 📘 TypeScript support
-- 🧪 Jest for testing
 - 🎨 ESLint + Prettier for code formatting `@antfu/eslint-config`
 - 🔄 Husky + lint-staged for git hooks
 
@@ -28,7 +28,7 @@ A TypeScript starter template for building Cloudflare Workers using Hono framewo
 │ ├── routes/       # API routes
 │ ├── services/     # Business logic
 │ └── index.ts      # Entry point
-├── test/           # Test files
+├── tests/           # Test files
 ├── .env.example    # Environment variables
 |── .dev.vars.example # Environment variables example
 ├── .lintstagedrc   # Configuration for lint-staged (pre-commit).

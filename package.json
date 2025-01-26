@@ -1,5 +1,6 @@
 {
   "name": "cloudflare-hono-drizzle-zod-starter-pack",
+  "type": "module",
   "version": "0.1.0",
   "scripts": {
     "dev": "wrangler dev",
@@ -8,6 +9,7 @@
     "lint:fix": "eslint . --fix",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "test": "vitest",
     "prepare": "husky"
   },
   "dependencies": {
@@ -22,6 +24,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^4.1.0",
     "@cloudflare/workers-types": "^4.20250124.3",
+    "@edge-runtime/vm": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/pg": "^8.11.11",
     "drizzle-kit": "^0.30.2",
@@ -29,8 +32,9 @@
     "eslint-plugin-format": "^1.0.1",
     "husky": "^9.1.7",
     "i": "^0.3.7",
-    "jest": "^29.7.0",
     "lint-staged": "^15.4.2",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.0.4",
     "wrangler": "^3.105.1"
   }
 }

@@ -1,2 +1,2 @@
 SECRET_KEY=value
-DB_URL = "postgres://default:mUEbQ7fK1Lrh@ep-wild-recipe-a1em13o6-pooler.ap-southeast-1.aws.neon.tech/minimal_pack?sslmode=require"
+DB_URL = database_connection_string
