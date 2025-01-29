@@ -3,10 +3,11 @@ compatibility_date = "2025-01-25"
 main = "src/index.ts"
 minify = true
 send_metrics = false
+compatibility_flags = [ "nodejs_compat" ]
+
 
 [observability.logs]
 enabled = true
-compatibility_flags = [ "nodejs_compat" ]
 
 # [vars]
 # MY_VAR = "my-variable"
