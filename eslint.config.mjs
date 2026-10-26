@@ -16,14 +16,20 @@ export default antfu({
     "antfu/no-top-level-await": ["off"],
     "node/prefer-global/process": ["off"],
     "node/no-process-env": ["error"],
-    "perfectionist/sort-imports": ["error", {
-      tsconfigRootDir: ".",
-    }],
+    "perfectionist/sort-imports": [
+      "error",
+      {
+        tsconfig: { rootDir: "." },
+      },
+    ],
     "style/semi": ["error", "always"],
     "style/quotes": ["error", "double"],
-    "unicorn/filename-case": ["error", {
-      case: "camelCase",
-      ignore: ["README.md"],
-    }],
+    "unicorn/filename-case": [
+      "error",
+      {
+        case: "camelCase",
+        ignore: ["README.md"],
+      },
+    ],
   },
 });

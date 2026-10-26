@@ -1,193 +1,199 @@
-# Cloudflare Hono Drizzle Zod Starter Kit
+# Cloudflare Hono Drizzle Zod starter kit
 
-A modern, production-ready starter template for building fast and scalable APIs on Cloudflare Workers. This kit combines the power of Hono framework, Drizzle ORM, and Zod validation to give you everything you need to build robust serverless applications.
+A starter template for building APIs on Cloudflare Workers with Hono, Drizzle ORM, Zod, and a Neon Postgres database. It includes three example endpoints, two of which read and write a database table, so you can see each piece connected before replacing it with your own code.
 
-## ✨ What's Included
+## What's included
 
-This starter kit comes with a carefully curated stack of modern tools:
+- [Hono](https://hono.dev/) for routing and middleware
+- [Drizzle ORM](https://orm.drizzle.team/) for the schema, queries, and migrations
+- [@neondatabase/serverless](https://neon.com/docs/serverless/serverless-driver) as the Postgres driver, which talks to Neon over HTTP
+- [Zod](https://zod.dev/) and [drizzle-zod](https://orm.drizzle.team/docs/zod) for request validation
+- [Cloudflare Workers](https://workers.cloudflare.com/) and Wrangler for running and deploying
+- [Vitest](https://vitest.dev/) for tests
+- TypeScript, with `@/` mapped to `src/`
+- ESLint with `@antfu/eslint-config`
+- Husky and lint-staged for a pre-commit hook
+- A GitHub Actions workflow that deploys on every push to `main`
 
-- **🚀 [Hono](https://hono.dev/)** - Lightning-fast web framework with excellent TypeScript support
-- **🗄️ [Drizzle ORM](https://orm.drizzle.team/)** - Type-safe database operations with SQL-like syntax
-- **🐘 [neondatabase/serverless](https://neon.com/docs/serverless/serverless-driver)** - Serverless PostgreSQL database package with automatic scaling
-- **✅ [Zod](https://zod.dev/)** - Runtime type validation and schema definition
-- **☁️ [Cloudflare Workers](https://workers.cloudflare.com/)** - Global edge computing platform
-- **🧪 [Vitest](https://vitest.dev/)** - Fast unit testing framework
-- **🎯 TypeScript** - Full type safety throughout your application
-- **🎨 Code Quality** - ESLint + Prettier with `@antfu/eslint-config`
-- **🔒 Git Hooks** - Husky + lint-staged for automated code quality checks
-
-## 📁 Project Structure
+## Project structure
 
 ```
 .
-├── .github/             # GitHub-specific configurations 
-│   └── workflows/       # Automation workflows for testing, deployment, etc.
-├── .husky/              # Git hooks (e.g., pre-commit)
-├── .vscode/             # VS Code workspace-specific settings
-├── src/ 
-│   ├── config/          # Configuration files
-│   ├── db/              # Database related code
-│   │   ├── connection.ts # Database connection setup
-│   │   └── schema/      # Drizzle schema definitions
-│   ├── middlewares/     # Hono middlewares
-│   ├── routes/          # API routes
-│   ├── services/        # Business logic
-│   └── index.ts         # Entry point
-├── tests/               # Test files
-├── .env.example         # Environment variables template
-├── .dev.vars.example    # Development environment variables template
-├── .lintstagedrc        # Configuration for lint-staged (pre-commit)
-├── drizzle.config.ts    # Drizzle configuration
-├── eslint.config.mjs    # ESLint configuration
-├── package.json         # Project metadata and dependencies
-├── tsconfig.json        # TypeScript configuration
-└── wrangler.toml        # Cloudflare Workers configuration
+├── .github/
+│   └── workflows/
+│       └── deploy.yml        # Deploys to Cloudflare on push to main
+├── .husky/
+│   └── pre-commit            # Runs lint-staged, then the test suite
+├── .vscode/                  # VS Code workspace settings
+├── src/
+│   ├── config/               # Empty, for your own config modules
+│   ├── db/
+│   │   ├── connection.ts     # createDB(): builds a Drizzle client from DB_URL
+│   │   └── schema/           # Table definitions and their Zod schemas
+│   ├── middlewares/          # Example request logger, not mounted in index.ts
+│   ├── routes/               # Hono routers
+│   ├── services/             # Database queries called by the routes
+│   └── index.ts              # Worker entry point, mounts routers under /api
+├── tests/                    # Vitest tests
+├── .env.example              # DB_URL for drizzle-kit
+├── .dev.vars.example         # Variables for wrangler dev
+├── .lintstagedrc             # Runs eslint --fix on staged .ts, .js, .json files
+├── drizzle.config.ts         # drizzle-kit config, writes migrations to ./drizzle
+├── eslint.config.mjs
+├── package.json
+├── tsconfig.json             # Maps @/ to src/
+├── vitest.config.ts          # Loads the @/ alias for tests
+├── wrangler.jsonc            # Worker name, compatibility date, and flags
+└── wrangler.jsonc.example    # Template for wrangler.jsonc
 ```
 
-## 🚀 Quick Start
+## Quick start
 
-### 1. Clone and Install
+### 1. Clone and install
 
 ```bash
-# Clone the repository
 git clone https://github.com/Musanna-al-akil/cloudflare-hono-drizzle-zod-starter-pack.git
-
-# Navigate to the project directory
 cd cloudflare-hono-drizzle-zod-starter-pack
-
-# Install dependencies
 bun install
 ```
 
-### 2. Environment Setup
+### 2. Set environment variables
 
-Create your environment files by copying the examples:
+The project reads variables from two files. Wrangler loads `.dev.vars` when you run the Worker locally. drizzle-kit loads `.env` when you generate or apply migrations. Both files are in `.gitignore`.
 
 ```bash
-# Copy environment files
 cp .env.example .env
 cp .dev.vars.example .dev.vars
 ```
 
-Then update the files with your actual values:
+Fill in your values:
 
-**`.env` file:**
+`.env`
+
 ```env
 DB_URL=your_database_connection_string_here
 ```
 
-**`.dev.vars` file:**
+`.dev.vars`
+
 ```env
 SECRET_KEY=your_secret_key_here
 DB_URL=your_database_connection_string_here
 ```
 
-### 3. Start Development
+### 3. Create the database table
 
 ```bash
-# Start the development server
+bun run db:generate
+bun run db:migrate
+```
+
+The first command writes SQL migration files to `./drizzle` from the schema in `src/db/schema/schema.ts`. The second applies them to the database in `DB_URL`.
+
+### 4. Run locally
+
+```bash
 bun run dev
 ```
 
-Your API will be available at `http://localhost:8787`
-
-### 4. Deploy to Production
+The API runs at `http://localhost:8787`. Try the example routes:
 
 ```bash
-# Login to Cloudflare (first time only)
-bunx wrangler login
+curl http://localhost:8787/api
+```
 
-# Deploy to Cloudflare Workers
+```bash
+curl -X POST http://localhost:8787/api/data-from-db -H "Content-Type: application/json" -d '{"name":"Ada","age":36}'
+```
+
+```bash
+curl http://localhost:8787/api/data-from-db/1
+```
+
+### 5. Deploy
+
+Log in to Cloudflare once:
+
+```bash
+bunx wrangler login
+```
+
+Then deploy:
+
+```bash
 bun run deploy
 ```
 
-## 🛠️ Available Commands
-
-| Command | Description |
-|---------|-------------|
-| `bun run dev` | Start development server with hot reload |
-| `bun run deploy` | Deploy to Cloudflare Workers |
-| `bun run lint` | Check code for style and quality issues |
-| `bun run lint:fix` | Automatically fix linting errors |
-| `bun run db:generate` | Generate database migrations |
-| `bun run db:migrate` | Apply database migrations |
-
-## 🔧 Configuration
-
-### Environment Variables
-
-The following environment variables are required:
-
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `DB_URL` | Database connection string | `postgresql://user:pass@host:port/db` |
-| `SECRET_KEY` | Application secret key | `your-super-secret-key-here` |
-
-### Database Setup
-
-This starter uses Drizzle ORM for database operations and is currently configured with **Neon** (PostgreSQL), but can be easily configured to work with any database that Drizzle supports.
-
-**Currently configured for:**
-- **Neon** - Serverless PostgreSQL with automatic scaling
-
-**Other supported databases:**
-- PostgreSQL, MySQL, SQLite, SQL Server, and more
-
-To set up your database:
-
-1. **Generate migrations:**
-   ```bash
-   bun run db:generate
-   ```
-
-2. **Apply migrations:**
-   ```bash
-   bun run db:migrate
-   ```
-
-## 🧪 Testing
-
-Run your test suite with:
+Wrangler does not upload `.dev.vars`. Set the production values as secrets:
 
 ```bash
-bun test
+bunx wrangler secret put DB_URL
 ```
 
+```bash
+bunx wrangler secret put SECRET_KEY
+```
 
-## 📚 Key Features Explained
+To deploy from GitHub instead, add a `CLOUDFLARE_API_TOKEN` secret to the repository. The workflow in `.github/workflows/deploy.yml` then deploys every push to `main`.
 
-### Hono Framework
-- **Fast**: Built for speed with minimal overhead
-- **TypeScript-first**: Excellent TypeScript support out of the box
-- **Middleware support**: Easy to extend with custom middleware
-- **Multiple platforms**: Works on Cloudflare Workers, Deno, Bun, and Node.js
+## Commands
 
-### Drizzle ORM
-- **Type-safe**: Full TypeScript support with automatic type inference
-- **SQL-like syntax**: Familiar query syntax that's easy to learn
-- **Migration system**: Version-controlled database schema changes
-- **Multiple databases**: Support for PostgreSQL, MySQL, SQLite, and more
+| Command               | What it does                              |
+| --------------------- | ----------------------------------------- |
+| `bun run dev`         | Starts `wrangler dev` with hot reload     |
+| `bun run deploy`      | Runs `wrangler deploy --minify`           |
+| `bun run lint`        | Runs ESLint on the whole project          |
+| `bun run lint:fix`    | Runs ESLint and applies its fixes         |
+| `bun run db:generate` | Generates migration files from the schema |
+| `bun run db:migrate`  | Applies pending migrations to `DB_URL`    |
+| `bun run test`        | Runs Vitest in watch mode                 |
 
-### Zod Validation
-- **Runtime validation**: Ensure data integrity at runtime
-- **Type inference**: Automatically generate TypeScript types from schemas
-- **Error handling**: Detailed error messages for validation failures
-- **Schema composition**: Build complex schemas from simple ones
+## Environment variables
 
-## 🤝 Contributing
+| Variable     | Used by                                                                  | Example                               |
+| ------------ | ------------------------------------------------------------------------ | ------------------------------------- |
+| `DB_URL`     | The Worker (`createDB`) and drizzle-kit                                  | `postgresql://user:pass@host:port/db` |
+| `SECRET_KEY` | Declared in the `Bindings` type in `src/index.ts`. Nothing reads it yet. | `your-secret-key`                     |
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+To add a variable, put it in `.dev.vars`, add it to the `Bindings` type in `src/index.ts`, and read it in a handler with `c.env.YOUR_VARIABLE`.
 
-## 📄 License
+## How a request flows
 
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+The `POST /api/data-from-db` route shows how the pieces connect:
+
+1. `src/db/schema/schema.ts` defines `randomTable` with Drizzle. drizzle-zod turns that table into `randomInsertSchema`, a Zod schema.
+2. The route in `src/routes/accessDb.routes.ts` parses the JSON body with `randomInsertSchema`. A body without `name` or `age` throws a Zod error.
+3. `createDB(c.env)` in `src/db/connection.ts` creates a Drizzle client from `DB_URL` for that request.
+4. `insertRandom` in `src/services/random.service.ts` runs the insert and returns the new row's id.
+
+When you add a column to the table, the Zod schema picks it up the next time the code runs. Run `bun run db:generate` and `bun run db:migrate` to update the database as well.
+
+## Using a different database
+
+The project uses Neon's HTTP driver (`drizzle-orm/neon-http`). To use another Postgres host, change the driver in `src/db/connection.ts`. The `pg` package is already installed, so `drizzle-orm/node-postgres` works without new dependencies.
+
+To switch to MySQL, SQLite, or another engine, you also need to change the `dialect` in `drizzle.config.ts` and rewrite `src/db/schema/schema.ts`, which imports its column types from `drizzle-orm/pg-core`. Drizzle's docs list the [supported databases and drivers](https://orm.drizzle.team/docs/get-started).
+
+## Testing
+
+```bash
+bun run test
+```
+
+Tests call the app with `app.request()`, so they don't start a server. See `tests/routes.test.ts` for an example. The pre-commit hook runs `eslint --fix` on staged files and then runs the test suite once. A failing test blocks the commit.
+
+## Contributing
+
+1. Fork the repository.
+2. Create a branch: `git checkout -b feature/your-feature`.
+3. Commit your changes.
+4. Push the branch: `git push origin feature/your-feature`.
+5. Open a pull request.
+
+## License
+
+MIT. See [LICENSE](./LICENSE).
 
 ---
 
-**Built with ❤️ by [Musanna AL Akil](https://github.com/Musanna-al-akil)**
-
-For questions, issues, or contributions, please [open an issue](https://github.com/Musanna-al-akil/cloudflare-hono-drizzle-zod-starter-pack/issues) on GitHub.
+Built with ❤️ by [Musanna Al Akil](https://github.com/Musanna-al-akil). For questions or bugs, [open an issue](https://github.com/Musanna-al-akil/cloudflare-hono-drizzle-zod-starter-pack/issues).

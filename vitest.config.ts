@@ -10,5 +10,7 @@ export default defineConfig({
       exclude: ["node_modules/**"],
     },
   },
-  plugins: [tsconfigPaths()],
+  plugins: [
+    tsconfigPaths(),
+  ],
 });
